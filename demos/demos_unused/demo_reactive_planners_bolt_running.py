@@ -7,13 +7,13 @@
 """
 import numpy as np
 import pybullet as p
+import pinocchio as se3 # type: ignore
 from matplotlib import pyplot as plt
 from robot_properties_bolt.config import BoltConfig
 from robot_properties_bolt.bolt_wrapper import BoltRobot
 from mim_control.robot_centroidal_controller import RobotCentroidalController
 from mim_control.robot_impedance_controller import RobotImpedanceController
-from reactive_planners_cpp import DcmReactiveStepper
-import pinocchio as se3
+from reactive_planners_cpp import DcmReactiveStepper # type: ignore
 from scipy.spatial.transform import Rotation as R
 from numpy.linalg import inv, pinv
 from math import sqrt
@@ -107,6 +107,7 @@ if __name__ == "__main__":
     # Create a robot instance. This initializes the simulator as well.
     env = BulletEnvWithGround()
     robot = env.add_robot(BoltRobot())
+
     tau = np.zeros(6)
     p.resetDebugVisualizerCamera(2., 50, -35, (0.0, 0.0, 0.0))
     p.setTimeStep(0.001)
@@ -138,7 +139,7 @@ if __name__ == "__main__":
     x_ori = [0.0, 0.0, 0.0, 1.0]
     x_angvel = [0, 0.0, 0]
     robot_config = BoltConfig()
-    config_file = robot_config.paths["imp_ctrl_yaml"]
+    config_file = robot_config.ctrl_path#robot_config.paths["imp_ctrl_yaml"]
     bolt_leg_ctrl = RobotImpedanceController(robot, config_file)
     centr_controller = RobotCentroidalController(
         robot_config,
@@ -151,7 +152,7 @@ if __name__ == "__main__":
         qp_penalty_ang=[1e6, 1e6, 1],
     )
 
-    omega = 10.18
+    omega = 5.7183913822#10.18#
     l_min = -0.2
     l_max = 0.2
     w_min = -0.2
@@ -181,8 +182,8 @@ if __name__ == "__main__":
         q[1].item() - 0.02,
         0.0,
         ]
-    t_s = 0.1
-    v_des = [1.8, 0.0, 0.0]
+    t_s = 0.25
+    v_des = [0.8, 0.0, 0.0]
     dcm_reactive_stepper = DcmReactiveStepper()
     dcm_reactive_stepper.initialize(
         is_left_leg_in_contact,
@@ -211,7 +212,7 @@ if __name__ == "__main__":
     xd_com = np.zeros((3, 1))
     x_com_cent = x_com.copy()
     xd_com_cent = xd_com.copy()
-    # omega = 7.2#np.sqrt(9.8 / com_height) #Lhum Running
+    #omega = np.sqrt(9.8 / com_height) #Lhum Running
     cnt_array = [1, 1]
     time = 0
     control_time = 0
@@ -510,6 +511,7 @@ if __name__ == "__main__":
                 yaw(q),
                 not open_loop,
             )
+
             duration_of_stance_phase = dcm_reactive_stepper.get_duration_of_stance_phase() - dcm_reactive_stepper.get_time_from_last_step_touchdown()
             is_left_leg_in_contact = dcm_reactive_stepper.get_is_left_leg_in_contact()
             swing_foot = dcm_reactive_stepper.get_next_support_foot_position()
@@ -523,7 +525,8 @@ if __name__ == "__main__":
             # if dcm_reactive_stepper.time_from_last_step_touchdown == 0:
             #     desired_q = np.array(q.copy())[:, 0]
             # else:
-            #     dcm_reactive_stepper.run(time, dcm_reactive_stepper.flying_foot_position, x_com.copy(), xd_com.copy(), 0)  # q[5])
+                # dcm_reactive_stepper.run(time, dcm_reactive_stepper.flying_foot_position, 
+                #                          x_com.copy(), xd_com.copy(), 0)  # q[5])
             x_des_local = []
             x_des_local.extend(
                 dcm_reactive_stepper.get_left_foot_position().copy()
@@ -751,19 +754,9 @@ if __name__ == "__main__":
 
     # dcm_reactive_stepper.stop()
     #
-    FIGSIZE = 3.7
-    FONT_SIZE = 8
-    FONT_WEIGHT = "normal"
-    # set the parameters
-    font = {'family' : 'normal',
-            'weight' : FONT_WEIGHT,
-            'size'   : FONT_SIZE}
-    plt.rc('font', **font)
-    FIGURE_SIZE = ( FIGSIZE , FIGSIZE * 9.0/16.0)
+
 
     p.stopStateLogging(logID)
-    print("TIME ", plt_T)
-
     # np.savetxt('tau' +'.txt', np.array(plt_tau_lokesh)[:, :])
 
     if record_plot:

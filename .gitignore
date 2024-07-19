@@ -1,4 +1,6 @@
 *.txt~
+*.pkl
+*.pth
 
 # No big files in the repo please.
 *.mp4

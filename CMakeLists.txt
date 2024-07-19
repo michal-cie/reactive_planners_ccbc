@@ -79,15 +79,15 @@ get_filename_component(CONFIG_PATH config ABSOLUTE)
 #
 
 install_scripts(
-  demos/demo_reactive_planners_bolt_step_adjustment.py
-  demos/demo_reactive_planners_dcm_reactive_stepper.py
-  demos/demo_reactive_planners_end_effector_trajectory3d.py
-  demos/demo_reactive_planners_stepper_head.py
-  demos/demo_reactive_planners_walking.py
-  demos/demo_reactive_planners_re_split_dcm.py
-  demos/demo_reactive_planners_split_dcm_uneven_terrain.py
-  demos/demo_reactive_planners_step_adaptation_timing_planner.py
-  demos/demo_reactive_planners_step_adjustment.py
+  demos/demos_unused/demo_reactive_planners_bolt_step_adjustment.py
+  demos/demos_unused/demo_reactive_planners_dcm_reactive_stepper.py
+  demos/demos_unused/demo_reactive_planners_end_effector_trajectory3d.py
+  demos/demos_unused/demo_reactive_planners_stepper_head.py
+  demos/demos_unused/demo_reactive_planners_walking.py
+  demos/demos_unused/demo_reactive_planners_re_split_dcm.py
+  demos/demos_unused/demo_reactive_planners_split_dcm_uneven_terrain.py
+  demos/demos_unused/demo_reactive_planners_step_adaptation_timing_planner.py
+  demos/demos_unused/demo_reactive_planners_step_adjustment.py
   DESTINATION
   bin)
 

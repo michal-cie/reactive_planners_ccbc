@@ -14,10 +14,12 @@ from reactive_planners.lipm_simulator import LipmSimpulator
 import numpy as np
 
 if __name__ == "__main__":
-    sim = LipmSimpulator(0.2)
+    sim = LipmSimpulator(0.2, omega = 5.7183913822, xd_com = np.zeros((3)))
 
     dcm_reactive_stepper = DcmReactiveStepper(
         is_left_leg_in_contact=True,
+        omega = 5.7183913822,
+        t_s = 0.25,
         l_min=-0.5,
         l_max=0.5,
         w_min=-0.5,

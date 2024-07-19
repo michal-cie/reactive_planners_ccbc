@@ -65,7 +65,7 @@ if __name__ == "__main__":
     kp = np.array([150.0, 150.0, 150.0, 150.0, 150.0, 150.0])
     kd = [5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
     robot_config = BoltConfig()
-    config_file = robot_config.paths["imp_ctrl_yaml"]
+    config_file = robot_config.ctrl_path#robot_config.paths["imp_ctrl_yaml"]
     bolt_leg_ctrl = RobotImpedanceController(robot, config_file)
     centr_controller = RobotCentroidalController(
         robot_config,
